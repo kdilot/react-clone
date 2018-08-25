@@ -1,0 +1,32 @@
+body {
+  margin: 0
+}
+
+@import '~antd/dist/antd.css';
+
+.ant-drawer-wrapper-body {
+  color: #CCC7C3;
+  background-color: #242424;
+}
+
+.ant-drawer-content-wrapper {
+  width: 300px;
+}
+
+.ant-drawer-header {
+  color: #CCC7C3;
+  background-color: #242424;
+}
+
+.ant-drawer-body {
+  font-size: 1em;
+  padding: 0;
+}
+
+div .selected {
+  border-left: 5px solid red;
+}
+
+.ant-badge-count {
+  box-shadow: 0 0 0 1px red
+}
