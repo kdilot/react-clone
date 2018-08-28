@@ -44,7 +44,7 @@ const Wrapper = styled.div`
   }
 
   h2.h2-lf {
-    width: 100%;
+    width: 100vw;
     text-align: center;
   }
 
