@@ -4,15 +4,18 @@ import Store from 'context/store';
 import { Badge, Icon, Drawer } from 'antd';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { genres, movieList, allMovieList } from 'common/movie';
 
 const Wrapper = styled.div`
-  width: 100%;
+  width: 100vw;
   height: 100vh;
+  overflow: auto;
+  overflow-x: hidden;
   background-color: black;
   color: white;
 `
 const Header = styled.div`
-  width: 100%;
+  width: 100vw;
   height: 10vh;
   padding: 1.5em;
   display: flex;
@@ -20,7 +23,6 @@ const Header = styled.div`
   align-items: center;
 
   h1 {
-    /* margin: auto; */
     margin: 0;
     color: red;
     display: inline;
@@ -33,12 +35,11 @@ const Header = styled.div`
   }
 `
 const Content = styled.div`
-  width: 100%;
+  width: 100vw;
   height: 90vh;
   padding: 1.5em;
 `
 
-// const { Header, Content } = Layout;
 class Main extends Component {
   constructor(props) {
     super(props)
@@ -62,11 +63,16 @@ class Main extends Component {
           color: '#AD99B5'
         }
       ],
+      searchList: [],
       searchDisplay: 'none',
       profileDisplay: 'none',
       visible: false,
       currentUser: 0,
+      genreList: movieList,
+      list: allMovieList,
+      genres: genres,
       handleSearch: this.handleSearch,
+      handleSearchList: this.handleSearchList,
       handleKeyUp: this.handleKeyUp,
       handleProfile: this.handleProfile,
       changeProfile: this.changeProfile,
@@ -95,6 +101,14 @@ class Main extends Component {
     } else {
       this.setState({ searchDisplay: 'none' })
     }
+  }
+
+  handleSearchList = (e) => {
+    const { list } = this.state
+    const searchList = list.filter(data =>
+      data.title.toLowerCase().indexOf(e.target.value) !== -1
+    )
+    this.setState({ searchList })
   }
 
   handleKeyUp = (e) => {
@@ -137,6 +151,7 @@ class Main extends Component {
             <Badge count={5} style={{ backgroundColor: 'red', boxShadow: 'red' }}>
               <Icon type="menu-unfold" style={{ fontSize: 24, color: 'white' }} onClick={showDrawer} />
               <Drawer
+                width="300px"
                 placement="left"
                 closable={false}
                 onClose={showDrawer}
@@ -169,10 +184,15 @@ Main.proptypes = {
     name: PropTypes.string,
     color: PropTypes.string,
   }),
-  currentUser: PropTypes.number,
+  searchList: PropTypes.array,
   searchDisplay: PropTypes.string,
   profileDisplay: PropTypes.string,
   visible: PropTypes.boolean,
+  currentUser: PropTypes.number,
+  genreList: PropTypes.array,
+  list: PropTypes.array,
+  genres: PropTypes.array,
+  handleSearchList: PropTypes.func,
   handleSearch: PropTypes.func,
   handleKeyUp: PropTypes.func,
   handleProfile: PropTypes.func,
