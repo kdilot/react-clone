@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Icon, Input } from 'antd';
+import { Icon, Input, Card } from 'antd';
 import Store from 'context/store';
-// import onClickOutside from "react-onclickoutside";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -48,9 +47,35 @@ const Result = styled.div`
     color: #FFF;
   }
 `
+const SearchResult = styled.div`
+  padding: 0 1.5em;
+  height: 90vh;
+  overflow: auto;
+  background: black;
+
+  p {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    color: white;
+    height: 100%;
+  }
+
+  .ant-card-grid {
+    box-shadow: 
+    1px 0 0 0 black, 
+    0 1px 0 0 black, 
+    1px 1px 0 0 black, 
+    1px 0 0 0 black inset, 
+    0 1px 0 0 black inset;
+    padding: 3px;
+  }
+  .ant-card-grid:hover {
+    box-shadow: 0 0 1px 1px white;
+  }
+`
 
 class Modal extends Component {
-
   render() {
     return (
       <Store.Consumer>
@@ -60,11 +85,30 @@ class Modal extends Component {
               <Search>
                 <Icon type="arrow-left" style={{ fontSize: 30, color: 'white', fontWeight: 'bold' }} className="search-back" onClick={store.handleSearch} />
                 <Icon type="search" style={{ fontSize: 30, color: 'white', fontWeight: 'bold' }} />
-                <Input placeholder="Search" />
+                <Input placeholder="Search" onChange={store.handleSearchList} />
               </Search>
-              <Result>
-                <h1>Enter the content to search</h1>
-              </Result>
+              {store.searchList.length !== 0 ?
+                (
+                  <SearchResult>
+                    <Card>
+                      {store.searchList.map(children => {
+                        return (
+                          children.backdrop_path ?
+                            (
+                              <Card.Grid style={{ width: '20%', textAlign: 'center' }} onClick={() => { store.handleMovieModal(children) }}>
+                                <img alt={children.title} style={{ width: '100%' }} src={store.imgSize.small + children.backdrop_path} />
+                              </Card.Grid>
+                            ) : ('')
+                        )
+                      }
+                      )}
+                    </Card>
+                  </SearchResult>
+                ) : (
+                  <Result>
+                    <h1>Enter the content to search</h1>
+                  </Result>
+                )}
             </Wrapper>
           )
         }}
