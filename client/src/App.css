@@ -1,5 +1,8 @@
-body {
-  margin: 0
+html, body {
+  width:100vw; /* or % */
+  height:100vh; /* or % */
+  overflow-x: hidden;
+  overflow: hidden;
 }
 
 @import '~antd/dist/antd.css';
@@ -30,3 +33,13 @@ div .selected {
 .ant-badge-count {
   box-shadow: 0 0 0 1px red
 }
+
+.ant-card-bordered {
+  border: 0
+}
+
+.ant-card-body {
+  background: black;
+  padding: 0
+}
+
