@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Modal, SideMenu, ItemList, Profile } from 'components';
+import { Modal, SideMenu, ItemList, Profile, MovieInformation } from 'components';
 import Store from 'context/store';
 import { Badge, Icon, Drawer } from 'antd';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { genres, movieList, allMovieList } from 'common/movie';
+import { genres, movieList, allMovieList, IMG_large, IMG_medium, IMG_small } from 'common/movie';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -19,7 +19,6 @@ const Header = styled.div`
   height: 10vh;
   padding: 1.5em;
   display: flex;
-    /* justify-content: center; */
   align-items: center;
 
   h1 {
@@ -63,9 +62,16 @@ class Main extends Component {
           color: '#AD99B5'
         }
       ],
+      imgSize: {
+        large: IMG_large,
+        medium: IMG_medium,
+        small: IMG_small,
+      },
       searchList: [],
+      movieData: {},
       searchDisplay: 'none',
       profileDisplay: 'none',
+      movieDisplay: 'none',
       visible: false,
       currentUser: 0,
       genreList: movieList,
@@ -74,6 +80,7 @@ class Main extends Component {
       handleSearch: this.handleSearch,
       handleSearchList: this.handleSearchList,
       handleKeyUp: this.handleKeyUp,
+      handleMovieModal: this.handleMovieModal,
       handleProfile: this.handleProfile,
       changeProfile: this.changeProfile,
       showDrawer: this.showDrawer,
@@ -105,17 +112,33 @@ class Main extends Component {
 
   handleSearchList = (e) => {
     const { list } = this.state
-    const searchList = list.filter(data =>
-      data.title.toLowerCase().indexOf(e.target.value) !== -1
-    )
-    this.setState({ searchList })
+    if(e.target.value) {
+      const searchList = list.filter(data =>
+        data.title.toLowerCase().indexOf(e.target.value) !== -1
+      )
+      this.setState({ searchList })
+    }
+  }
+
+  handleMovieModal = (data) => {
+    const { movieDisplay } = this.state
+    if (movieDisplay === 'none') {
+      this.setState({ movieDisplay: 'block' })
+    } else {
+      this.setState({ movieDisplay: 'none' })
+    }
+    if (data) this.setState({ movieData: data })
   }
 
   handleKeyUp = (e) => {
-    const { searchDisplay } = this.state
+    const { searchDisplay, movieDisplay } = this.state
     //  click ESC button event
-    if (e.keyCode === 27 && searchDisplay !== 'none') {
-      this.handleSearch(1)
+    if (e.keyCode === 27) {
+      if(movieDisplay !== 'none') {
+        this.handleMovieModal(false)
+      } else if(searchDisplay !== 'none') {
+        this.handleSearch(1)
+      } 
     }
   }
 
@@ -147,8 +170,9 @@ class Main extends Component {
     return (
       <Store.Provider value={this.state}>
         <Wrapper>
+          <MovieInformation />
           <Header>
-            <Badge count={5} style={{ backgroundColor: 'red', boxShadow: 'red' }}>
+            <Badge count={Object.keys(this.state.list).length} style={{ backgroundColor: 'red', boxShadow: 'red' }} overflowCount={999}>
               <Icon type="menu-unfold" style={{ fontSize: 24, color: 'white' }} onClick={showDrawer} />
               <Drawer
                 width="300px"
@@ -184,9 +208,16 @@ Main.proptypes = {
     name: PropTypes.string,
     color: PropTypes.string,
   }),
+  imgSize: PropTypes.shape({
+    large: PropTypes.string,
+    medium: PropTypes.string,
+    small: PropTypes.string,
+  }),
   searchList: PropTypes.array,
+  movieData: PropTypes.object,
   searchDisplay: PropTypes.string,
   profileDisplay: PropTypes.string,
+  movieDisplay: PropTypes.string,
   visible: PropTypes.boolean,
   currentUser: PropTypes.number,
   genreList: PropTypes.array,
@@ -195,6 +226,7 @@ Main.proptypes = {
   handleSearchList: PropTypes.func,
   handleSearch: PropTypes.func,
   handleKeyUp: PropTypes.func,
+  handleMovieModal: PropTypes.func,
   handleProfile: PropTypes.func,
   showDrawer: PropTypes.func,
 }
