@@ -27,7 +27,9 @@ html, body {
 }
 
 div .selected {
-  border-left: 5px solid red;
+  border-left: 0.4em solid red;
+  font-weight: bold;
+  padding-left: 1.2em;
 }
 
 .ant-badge-count {
