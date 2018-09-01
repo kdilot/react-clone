@@ -106,7 +106,7 @@ class Modal extends Component {
                   </SearchResult>
                 ) : (
                   <Result>
-                    <h1>Enter the content to search</h1>
+                    <h1>Enter a term to search</h1>
                   </Result>
                 )}
             </Wrapper>
