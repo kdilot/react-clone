@@ -98,6 +98,8 @@ const OptionList = styled.div`
     margin: 0;
     margin-left: 5px;
     word-break: break-all;  
+    white-space: nowrap;
+    overflow: hidden
   }
 `
 
@@ -132,39 +134,33 @@ class SideMenu extends Component {
                       <Profile />
                     </Wrapper>
                     <Wrapper onClick={this.handleDisplay}>
-                      <h2>Setting</h2>
+                      <h2>Notifications</h2>
                       <Icon type="right" className="icon" style={{ fontSize: 20 }} />
                     </Wrapper>
-                    <List><p>Movie</p></List>
-                    <List><p>Action</p></List>
-                    <List><p>Drama</p></List>
-                    <List><p>Animation</p></List>
+                    <List className={store.menuSelected === 'Home' ? 'selected' : ''} onClick={() => { store.handleMenu('Home') }}><p>Home</p></List>
+                    <List className={store.menuSelected === 'Action' ? 'selected' : ''} onClick={() => { store.handleMenu('Action') }}><p>Action</p></List>
+                    <List className={store.menuSelected === 'Adventure' ? 'selected' : ''} onClick={() => { store.handleMenu('Adventure') }}><p>Adventure</p></List>
+                    <List className={store.menuSelected === 'Animation' ? 'selected' : ''} onClick={() => { store.handleMenu('Animation') }}><p>Animation</p></List>
+                    <List className={store.menuSelected === 'Drama' ? 'selected' : ''} onClick={() => { store.handleMenu('Drama') }}><p>Drama</p></List>
+                    <List className={store.menuSelected === 'Horror' ? 'selected' : ''} onClick={() => { store.handleMenu('Horror') }}><p>Horror</p></List>
                   </div>
                   <div style={{ display: !this.state.display ? 'block' : 'none' }}>
                     <Wrapper onClick={this.handleDisplay}>
                       <Icon type="left" className="icon-lf" style={{ fontSize: 20 }} />
-                      <h2 className="h2-lf">Setting</h2>
+                      <h2 className="h2-lf">Notifications</h2>
                     </Wrapper>
-                    <OptionList>
-                      <div className="img"></div>
-                      <p>Test information</p>
-                    </OptionList>
-                    <OptionList>
-                      <div className="img"></div>
-                      <p>Test information</p>
-                    </OptionList>
-                    <OptionList>
-                      <div className="img"></div>
-                      <p>Test information</p>
-                    </OptionList>
-                    <OptionList>
-                      <div className="img"></div>
-                      <p>Test information</p>
-                    </OptionList>
-                    <OptionList>
-                      <div className="img"></div>
-                      <p>Test information</p>
-                    </OptionList>
+                    {store.list.filter(_children => _children.backdrop_path).slice(0, 15).map(children => {
+                      return (
+                        <OptionList key={children.title} onClick={() => { store.handleMovieModal(children) }}>
+                          <div className="img"><img alt={children.title} style={{ width: '100%' }} src={store.imgSize.small + children.backdrop_path} /></div>
+                          <p>
+                            Suggestion for You
+                            <br />
+                            {children.title}
+                          </p>
+                        </OptionList>
+                      )
+                    })}
                   </div>
                 </div>
               </CSSTransition>
