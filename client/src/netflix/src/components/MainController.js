@@ -73,8 +73,10 @@ class Main extends Component {
       profileDisplay: 'none',
       movieDisplay: 'none',
       visible: false,
+      menuSelected: 'Home',
       currentUser: 0,
       genreList: movieList,
+      menuMovielist: movieList,
       list: allMovieList,
       genres: genres,
       handleSearch: this.handleSearch,
@@ -82,6 +84,7 @@ class Main extends Component {
       handleKeyUp: this.handleKeyUp,
       handleMovieModal: this.handleMovieModal,
       handleProfile: this.handleProfile,
+      handleMenu: this.handleMenu,
       changeProfile: this.changeProfile,
       showDrawer: this.showDrawer,
     }
@@ -112,7 +115,7 @@ class Main extends Component {
 
   handleSearchList = (e) => {
     const { list } = this.state
-    if(e.target.value) {
+    if (e.target.value) {
       const searchList = list.filter(data =>
         data.title.toLowerCase().indexOf(e.target.value) !== -1
       )
@@ -131,15 +134,24 @@ class Main extends Component {
   }
 
   handleKeyUp = (e) => {
-    const { searchDisplay, movieDisplay } = this.state
+    const { searchDisplay, movieDisplay, visible } = this.state
     //  click ESC button event
     if (e.keyCode === 27) {
-      if(movieDisplay !== 'none') {
+      if (movieDisplay !== 'none') {
         this.handleMovieModal(false)
-      } else if(searchDisplay !== 'none') {
+      } else if (searchDisplay !== 'none') {
         this.handleSearch(1)
-      } 
+      } else if(visible) {
+        this.showDrawer()
+      }
     }
+  }
+
+  handleMenu = (menu) => {
+    const { genreList } = this.state
+    this.setState({ menuSelected: menu })
+    this.setState({ menuMovielist: menu === 'Home' ? genreList : genreList.filter(children => children.name === menu) })
+    this.showDrawer()
   }
 
   showDrawer = () => {
@@ -154,10 +166,6 @@ class Main extends Component {
   }
   componentWillUnmount() {
     document.removeEventListener("keydown", this.handleKeyUp, false);
-  }
-
-  componentDidUpdate = () => {
-    // console.log(1)
   }
 
   render() {
@@ -219,8 +227,10 @@ Main.proptypes = {
   profileDisplay: PropTypes.string,
   movieDisplay: PropTypes.string,
   visible: PropTypes.boolean,
+  menuSelected: PropTypes.string,
   currentUser: PropTypes.number,
   genreList: PropTypes.array,
+  menuMovielist: PropTypes.array,
   list: PropTypes.array,
   genres: PropTypes.array,
   handleSearchList: PropTypes.func,
@@ -228,5 +238,6 @@ Main.proptypes = {
   handleKeyUp: PropTypes.func,
   handleMovieModal: PropTypes.func,
   handleProfile: PropTypes.func,
+  handleMenu: PropTypes.func,
   showDrawer: PropTypes.func,
 }
