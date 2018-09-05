@@ -2,7 +2,7 @@
 
 > react,
 > react-context,
-> react-transition-group,
-> react-router,
+> react-slick,
+> react-onclickoutside,
 > ant-design,
 > styled-components
