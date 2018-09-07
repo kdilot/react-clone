@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Avatar, Icon } from 'antd';
 import styled from 'styled-components';
-import { Profile } from 'components'
 import { CSSTransition } from 'react-transition-group';
 import Store from 'context/store'
 
@@ -131,7 +130,6 @@ class SideMenu extends Component {
                       <Avatar shape="square" size={50} icon="user" style={{ backgroundColor: store.user[store.currentUser].color }} />
                       <h3>{store.user[store.currentUser].name}</h3>
                       <Icon type="swap" className="header-icon" style={{ fontSize: 24 }} />
-                      <Profile />
                     </Wrapper>
                     <Wrapper onClick={this.handleDisplay}>
                       <h2>Notifications</h2>
