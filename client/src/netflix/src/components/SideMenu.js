@@ -111,7 +111,6 @@ class SideMenu extends Component {
 
   state = {
     display: true,
-    profileDisplay: 'block'
   }
 
   render() {
