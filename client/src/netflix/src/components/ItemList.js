@@ -35,11 +35,6 @@ const Wrapper = styled.div`
 `
 
 class ItemList extends Component {
-  state = {
-    display: 'none',
-    data: '',
-  }
-
   View = (store) => {
     const settings = {
       dots: false,
